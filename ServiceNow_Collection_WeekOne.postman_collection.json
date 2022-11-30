@@ -1,0 +1,208 @@
+{
+	"info": {
+		"_postman_id": "828bfb8a-10e9-4c00-83eb-4e4eea9447bd",
+		"name": "ServiceNow_Collection_WeekOne",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24454944"
+	},
+	"item": [
+		{
+			"name": "Create_Incident Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"Resp=pm.response.json();\r",
+							"Sys_id=Resp.result.sys_id;\r",
+							"pm.globals.set(\"G_sysid\",Sys_id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"short_description\":\"hello\",\r\n\"description\":\"hello world\"}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{SIT_URL}}/api/now/table/incident",
+					"protocol": "https",
+					"host": [
+						"{{SIT_URL}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"incident"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search_Incident_BySysId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"The Incident created in the 'Create Incident' POST request is present in the Incident List\", function () {\r",
+							"    var sys_Id = pm.globals.get(\"G_sysId\");\r",
+							"    var Resp = pm.response.json();\r",
+							"\r",
+							"    for (item of Resp.result){\r",
+							"       if(item.sys_id == sys_Id) {\r",
+							"           var IncidentNumber = item.task_effective_number;\r",
+							"            console.log(\"The \"+IncidentNumber+\" incident created is present in the Incident List\");\r",
+							"       }\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{SIT_URL}}/api/now/table/incident/0231152897231110a6c1db24a253afad",
+					"protocol": "https",
+					"host": [
+						"{{SIT_URL}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"incident",
+						"0231152897231110a6c1db24a253afad"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search_Incident_QueryParam",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"The Incident created in the 'Create Incident' POST request is present in the Incident List\", function () {\r",
+							"    var sys_Id = pm.globals.get(\"G_sysId\");\r",
+							"    var Resp = pm.response.json();\r",
+							"\r",
+							"    for (item of Resp.result){\r",
+							"       if(item.sys_id == sys_Id) {\r",
+							"           var IncidentNumber = item.task_effective_number;\r",
+							"            console.log(\"The \"+IncidentNumber+\" incident created is present in the Incident List\");\r",
+							"       }\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{SIT_URL}}/api/now/table/incident?sys_id=\"0231152897231110a6c1db24a253afad\"",
+					"protocol": "https",
+					"host": [
+						"{{SIT_URL}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"incident"
+					],
+					"query": [
+						{
+							"key": "sys_id",
+							"value": "\"0231152897231110a6c1db24a253afad\""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete_incident",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://{{SIT_URL}}/api/now/table/incident/{{G_sysid}}",
+					"protocol": "https",
+					"host": [
+						"{{SIT_URL}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"incident",
+						"{{G_sysid}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "fhV6YjhR!0A@",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "admin",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "SIT_URL",
+			"value": "dev128329.service-now.com",
+			"type": "string"
+		}
+	]
+}
